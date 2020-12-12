@@ -1,24 +1,42 @@
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react'
+import {BrowserRouter, Route} from 'react-router-dom'
+import axios from 'axios'
+import StarWarsShips from './components/StarWarsShips'
+import StarshipInfo from './components/StarWarsShips'
 import './App.css';
+import { Router } from 'express';
 
 function App() {
+  const [ships, setShips] = useState([])
+
+  const handleSubmit = () => {
+   
+    const url = `https://swapi.dev/api/starships/`
+    axios.get(url).then(ships => {
+      setShips(ships.data.results)
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+
+  useEffect(() => {
+    handleSubmit()
+  }, []) 
+
   return (
+    <BrowserRouter>
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <p>Star Wars Ships</p>
       </header>
+      <div>
+        <Route path="/starships" render={(routeInfo) => {return <StarshipInfo shipInfo ={routeInfo} />}} />
+        <Route path="/" render={() =>{return <StarWarsShips ships={ships} />}} />
+      </div>
     </div>
+    </BrowserRouter>
+    
   );
 }
 
