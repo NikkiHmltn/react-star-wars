@@ -2,23 +2,20 @@ import {Link} from 'react-router-dom';
 
 export default function StarWarsShips(props) {
     
-    const starship = props.ships
-    const shipDetails = starship.map(shipItem => {
+    const shipDetails = props.starships.map(shipItem => {
        return (
-            <li>
+            <div className='ship-list'>
             <Link to={{
-            pathname: '/starship',
+            pathname: '/starships',
             state: shipItem,
-        }}>{shipItem.name}</Link></li>
+        }}>{shipItem.name}</Link></div>
        )
        
     })
    
     return(
-        <div>
-            <ul>
-                {shipDetails}
-            </ul>
+        <div className="container">
+            {shipDetails}
         </div>
     )
 }

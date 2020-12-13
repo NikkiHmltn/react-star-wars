@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {BrowserRouter, Route} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import axios from 'axios'
 import StarWarsShips from './components/StarWarsShips'
-import StarshipInfo from './components/StarWarsShips'
+import StarshipInfo from './components/StarshipInfo'
 import './App.css';
-import { Router } from 'express';
 
 function App() {
   const [ships, setShips] = useState([])
@@ -12,8 +11,8 @@ function App() {
   const handleSubmit = () => {
    
     const url = `https://swapi.dev/api/starships/`
-    axios.get(url).then(ships => {
-      setShips(ships.data.results)
+    axios.get(url).then(res => {
+      setShips(res.data.results)
     })
     .catch(err => {
       console.log(err);
@@ -31,8 +30,11 @@ function App() {
       <p>Star Wars Ships</p>
       </header>
       <div>
-        <Route path="/starships" render={(routeInfo) => {return <StarshipInfo shipInfo ={routeInfo} />}} />
-        <Route path="/" render={() =>{return <StarWarsShips ships={ships} />}} />
+        <Switch>
+          <Route exact path="/" render={(routeInfo) =>{return <StarWarsShips starships={ships} routeInfo={routeInfo} />}} />
+
+          <Route exact path="/starships" render={(routeInfo) => {return <StarshipInfo shipInfo={routeInfo} starships={ships}/>}} />
+        </Switch>
       </div>
     </div>
     </BrowserRouter>
